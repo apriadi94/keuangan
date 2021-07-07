@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text } from 'react-native'
+import { View, Text, ScrollView } from 'react-native'
 import moment from 'moment'
 import convertRupiah from 'rupiah-format'
 
@@ -7,15 +7,33 @@ const HarianComponent = () => {
     const [data, setData] = useState([])
     const fetchData = [
         {
-            tanggal: "2021-07-06",
+            tanggal: "2021-07-02",
             kategori: "Makanan",
             jumlah: 150000,
             jenis: 'pengeluaran'
         },
         {
-            tanggal: "2021-07-06",
+            tanggal: "2021-07-02",
             kategori: "Pakaian",
             jumlah: 250000,
+            jenis: 'pengeluaran'
+        },
+        {
+            tanggal: "2021-07-03",
+            kategori: "Makanan",
+            jumlah: 25000,
+            jenis: 'pengeluaran'
+        },
+        {
+            tanggal: "2021-07-03",
+            kategori: "Makanan",
+            jumlah: 25000,
+            jenis: 'pengeluaran'
+        },
+        {
+            tanggal: "2021-07-03",
+            kategori: "Makanan",
+            jumlah: 25000,
             jenis: 'pengeluaran'
         },
         {
@@ -23,7 +41,49 @@ const HarianComponent = () => {
             kategori: "Makanan",
             jumlah: 25000,
             jenis: 'pengeluaran'
-        }
+        },
+        {
+            tanggal: "2021-07-07",
+            kategori: "Kosmetik",
+            jumlah: 25000,
+            jenis: 'pengeluaran'
+        },
+        {
+            tanggal: "2021-07-07",
+            kategori: "Peralatan Rumah Tangga",
+            jumlah: 25000,
+            jenis: 'pengeluaran'
+        },
+        {
+            tanggal: "2021-07-07",
+            kategori: "Transfortasi",
+            jumlah: 30000,
+            jenis: 'pengeluaran'
+        },
+        {
+            tanggal: "2021-07-07",
+            kategori: "Tagihan",
+            jumlah: 25000,
+            jenis: 'pengeluaran'
+        },
+        {
+            tanggal: "2021-07-07",
+            kategori: "Makanan",
+            jumlah: 25000,
+            jenis: 'pengeluaran'
+        },
+        {
+            tanggal: "2021-07-07",
+            kategori: "Makanan",
+            jumlah: 25000,
+            jenis: 'pengeluaran'
+        },
+        {
+            tanggal: "2021-07-07",
+            kategori: "Makanan",
+            jumlah: 25000,
+            jenis: 'pengeluaran'
+        },
     ]
 
     const getData = async() => {
@@ -45,9 +105,22 @@ const HarianComponent = () => {
             const objectArray = Object.entries(newData);
 
             objectArray.forEach(([key, value]) => {
+                let pemasukan = 0
+                let pengeluaran = 0
+
+                value.forEach(item => {
+                    if(item.jenis === 'pemasukan'){
+                        pemasukan += item.jumlah
+                    }else{
+                        pengeluaran += item.jumlah
+                    }
+                })
+
                 arrData.push({
                     tanggal: key,
-                    data: value
+                    data: value,
+                    pemasukan,
+                    pengeluaran
                 })
             });
 
@@ -58,10 +131,12 @@ const HarianComponent = () => {
     useEffect(() => {
         getData()
     }, [])
+    
 
 
     return(
         <View style={{flex: 1}}>
+            <ScrollView>
             {
                 data.map((item, index) => 
                     <View key={index} style={{ backgroundColor: '#fff', marginTop: 5 }}>
@@ -81,10 +156,10 @@ const HarianComponent = () => {
                                     </View>
                                 </View>
                                 <View style={{ flex: 1, justifyContent: 'center' }}>
-                                    <Text style={{ textAlign: 'right',  marginRight: 10  }}>Rp. 0</Text>
+                                    <Text style={{ textAlign: 'right',  marginRight: 10  }}>{convertRupiah.convert(item.pemasukan)}</Text>
                                 </View>
                                 <View style={{ flex: 1, justifyContent: 'center', marginRight: 10 }}>
-                                    <Text style={{ textAlign: 'right' }}>Rp. 0</Text>
+                                    <Text style={{ textAlign: 'right' }}>{convertRupiah.convert(item.pengeluaran)}</Text>
                                 </View>
                             </View>
                             <View style={{ height: 1, marginHorizontal: 5, backgroundColor: '#f2f2f2' }}></View>
@@ -115,8 +190,10 @@ const HarianComponent = () => {
                     </View>
                 )
             }
-           
-            
+            <View style={{ height : 70, backgroundColor: 'white'}}>
+
+            </View>
+            </ScrollView>
         </View>
     )
 }

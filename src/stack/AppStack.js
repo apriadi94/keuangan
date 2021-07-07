@@ -13,10 +13,18 @@ const AppStack = () => {
             <Tab.Navigator>
                 <Tab.Screen name="Home" component={HomeStack} options={{ 
                     tabBarLabel: () => (
-                        <Text style={{fontSize : 12}}>Home</Text>
+                        <Text style={{fontSize : 12}}>Beranda</Text>
                     ),
                     tabBarIcon: ({ color }) => (
                         <Icon name="home" size={20} color={color} style={{marginTop : 5}} />
+                    ),
+                 }}/>
+                 <Tab.Screen name="Perencanaan" component={HomeStack} options={{ 
+                    tabBarLabel: () => (
+                        <Text style={{fontSize : 12}}>Perencanaan</Text>
+                    ),
+                    tabBarIcon: ({ color }) => (
+                        <Icon name="money" size={20} color={color} style={{marginTop : 5}} />
                     ),
                  }}/>
             </Tab.Navigator>
