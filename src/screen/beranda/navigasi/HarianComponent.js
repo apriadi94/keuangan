@@ -10,80 +10,25 @@ const HarianComponent = () => {
             tanggal: "2021-07-02",
             kategori: "Makanan",
             jumlah: 150000,
-            jenis: 'pengeluaran'
+            jenis: 'pengeluaran',
+            keterangan: 'Mie Indomie 3, Mie Sedap 5, Mie Sarimi 7'
         },
         {
             tanggal: "2021-07-02",
             kategori: "Pakaian",
-            jumlah: 250000,
-            jenis: 'pengeluaran'
+            jumlah: 375000,
+            jenis: 'pengeluaran',
+            keterangan: 'Sepatu dan Dasi'
         },
+
         {
-            tanggal: "2021-07-03",
-            kategori: "Makanan",
-            jumlah: 25000,
-            jenis: 'pengeluaran'
+            tanggal: "2021-07-04",
+            kategori: "Proyek",
+            jumlah: 2000000,
+            jenis: 'pemasukan',
+            keterangan: 'Proyek PTA'
         },
-        {
-            tanggal: "2021-07-03",
-            kategori: "Makanan",
-            jumlah: 25000,
-            jenis: 'pengeluaran'
-        },
-        {
-            tanggal: "2021-07-03",
-            kategori: "Makanan",
-            jumlah: 25000,
-            jenis: 'pengeluaran'
-        },
-        {
-            tanggal: "2021-07-07",
-            kategori: "Makanan",
-            jumlah: 25000,
-            jenis: 'pengeluaran'
-        },
-        {
-            tanggal: "2021-07-07",
-            kategori: "Kosmetik",
-            jumlah: 25000,
-            jenis: 'pengeluaran'
-        },
-        {
-            tanggal: "2021-07-07",
-            kategori: "Peralatan Rumah Tangga",
-            jumlah: 25000,
-            jenis: 'pengeluaran'
-        },
-        {
-            tanggal: "2021-07-07",
-            kategori: "Transfortasi",
-            jumlah: 30000,
-            jenis: 'pengeluaran'
-        },
-        {
-            tanggal: "2021-07-07",
-            kategori: "Tagihan",
-            jumlah: 25000,
-            jenis: 'pengeluaran'
-        },
-        {
-            tanggal: "2021-07-07",
-            kategori: "Makanan",
-            jumlah: 25000,
-            jenis: 'pengeluaran'
-        },
-        {
-            tanggal: "2021-07-07",
-            kategori: "Makanan",
-            jumlah: 25000,
-            jenis: 'pengeluaran'
-        },
-        {
-            tanggal: "2021-07-07",
-            kategori: "Makanan",
-            jumlah: 25000,
-            jenis: 'pengeluaran'
-        },
+
     ]
 
     const getData = async() => {
@@ -150,16 +95,18 @@ const HarianComponent = () => {
                                         <Text style={{fontSize: 10}}>
                                             {moment(item.tanggal).format('MM YYYY')}
                                         </Text>
-                                        <View style={{ backgroundColor: 'gray', alignItems: 'center' }}>
-                                            <Text style={{fontSize: 10, color: 'white'}}>{moment(item.tanggal).format('dddd')}</Text>
+                                        <View style={{ backgroundColor: 'gray', alignItems: 'center', borderRadius: 5 }}>
+                                            <Text style={{fontSize: 10, color: 'white', marginHorizontal: 5}}>{moment(item.tanggal).format('dddd')}</Text>
                                         </View>
                                     </View>
                                 </View>
-                                <View style={{ flex: 1, justifyContent: 'center' }}>
-                                    <Text style={{ textAlign: 'right',  marginRight: 10  }}>{convertRupiah.convert(item.pemasukan)}</Text>
+                                <View style={{ flex: 1.5, justifyContent: 'center' }}>
+                                    <Text style={{ textAlign: 'center', fontSize: 12 }}>Pemasukan</Text>
+                                    <Text style={{ textAlign: 'center',  marginRight: 10, color: '#0099ff'  }}>{convertRupiah.convert(item.pemasukan).replace(',00','')}</Text>
                                 </View>
                                 <View style={{ flex: 1, justifyContent: 'center', marginRight: 10 }}>
-                                    <Text style={{ textAlign: 'right' }}>{convertRupiah.convert(item.pengeluaran)}</Text>
+                                    <Text style={{ textAlign: 'center', fontSize: 12 }}>Pengeluaran</Text>
+                                    <Text style={{ textAlign: 'center', color: '#ff4000' }}>{convertRupiah.convert(item.pengeluaran).replace(',00','')}</Text>
                                 </View>
                             </View>
                             <View style={{ height: 1, marginHorizontal: 5, backgroundColor: '#f2f2f2' }}></View>
@@ -169,30 +116,25 @@ const HarianComponent = () => {
                                         <View style={{ flex: 1, marginLeft: 10}}>
                                             <Text>{value.kategori}</Text>
                                         </View>
-                                        <View style={{flex : 1}}>
-                                            <Text style={{ textAlign: 'right', marginRight: 10 }}>
-                                                {
-                                                    value.jenis === 'pemasukan' ? convertRupiah.convert(value.jumlah) : 'Rp. 0'
-                                                }
+                                        <View style={{flex : 1.5, marginRight: 10}}>
+                                            <Text style={{ marginRight: 10 }}>
+                                                {value.keterangan}
                                             </Text>
                                         </View>
                                         <View style={{flex : 1, marginRight: 10 }}>
-                                            <Text style={{ textAlign: 'right' }}>
-                                                {
-                                                    value.jenis === 'pengeluaran' ? convertRupiah.convert(value.jumlah) : 'Rp. 0'
-                                                }
+                                            <Text style={{ textAlign: 'right', fontWeight: 'bold', color: value.jenis === 'pemasukan' ? '#0099ff' : '#ff4000' }}>
+                                                {convertRupiah.convert(value.jumlah).replace(',00','')}
                                             </Text>
                                         </View>
                                     </View>
                                 )
                             }
                         </View>
+                        <View style={{ height: 1, marginTop: 10, backgroundColor: 'black' }}></View>
                     </View>
                 )
             }
-            <View style={{ height : 70, backgroundColor: 'white'}}>
-
-            </View>
+            { data.length > 3 ? <View style={{ height : 70, backgroundColor: 'white'}}></View> : null }
             </ScrollView>
         </View>
     )
