@@ -61,7 +61,7 @@ const HarianComponent = () => {
 
 
     return(
-        <View>
+        <View style={{flex: 1}}>
             {
                 data.map((item, index) => 
                     <View key={index} style={{ backgroundColor: '#fff', marginTop: 5 }}>
@@ -115,6 +115,8 @@ const HarianComponent = () => {
                     </View>
                 )
             }
+           
+            
         </View>
     )
 }
