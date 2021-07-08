@@ -3,19 +3,21 @@ import { View, Text, ScrollView } from 'react-native'
 import moment from 'moment'
 import convertRupiah from 'rupiah-format'
 
-const HarianComponent = () => {
+const HarianComponent = ({ navigation }) => {
     const [data, setData] = useState([])
     const fetchData = [
         {
             tanggal: "2021-07-02",
-            kategori: "Makanan",
+            kategoriName: "Makanan",
+            kategoriId: 1,
             jumlah: 150000,
             jenis: 'pengeluaran',
             keterangan: 'Mie Indomie 3, Mie Sedap 5, Mie Sarimi 7'
         },
         {
             tanggal: "2021-07-02",
-            kategori: "Pakaian",
+            kategoriName: "Pakaian",
+            kategoriId: 2,
             jumlah: 375000,
             jenis: 'pengeluaran',
             keterangan: 'Sepatu dan Dasi'
@@ -23,7 +25,8 @@ const HarianComponent = () => {
 
         {
             tanggal: "2021-07-04",
-            kategori: "Proyek",
+            kategoriName: "Proyek",
+            kategoriId: 10,
             jumlah: 2000000,
             jenis: 'pemasukan',
             keterangan: 'Proyek PTA'
@@ -130,7 +133,7 @@ const HarianComponent = () => {
                                 )
                             }
                         </View>
-                        <View style={{ height: 1, marginTop: 10, backgroundColor: 'black' }}></View>
+                        <View style={{ height: 1, marginTop: 10, backgroundColor: '#999999' }}></View>
                     </View>
                 )
             }
