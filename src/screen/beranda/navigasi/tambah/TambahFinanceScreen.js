@@ -1,12 +1,13 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import { View, Text, TouchableOpacity, TextInput, TouchableWithoutFeedback } from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome';
 import moment from 'moment'
 import DateTimePicker from '@react-native-community/datetimepicker';
+import { AddFinanceContext } from '../../../../provider/AddFinanceProvider'
 
 
 const TambahFinanceScreen = ({ navigation }) => {
-    const [active, setActive] = useState('pengeluaran')
+    const { kategori, setKategori, active, setActive } = useContext(AddFinanceContext)
     const [date, setDate] = useState(new Date());
     const [mode, setMode] = useState('date');
     const [show, setShow] = useState(false);
@@ -30,10 +31,24 @@ const TambahFinanceScreen = ({ navigation }) => {
         <View>
             <View style={{ backgroundColor: '#fff' }}>
                 <View style={{ flexDirection : 'row', justifyContent: 'space-between', marginTop: 20}}>
-                    <TouchableOpacity disabled={active === 'pengeluaran'} onPress={() =>setActive('pengeluaran')} style={{ flex: 1, height: 40, marginLeft: 20, marginRight: 5, borderRadius: 10, justifyContent: 'center', alignItems: 'center', backgroundColor: active === 'pengeluaran' ? '#ff4000' : '#e6e6e6' }}>
+                    <TouchableOpacity disabled={active === 'pengeluaran'} onPress={() => {
+                            setActive('pengeluaran')
+                            setKategori({
+                                kategoriId: 1,
+                                kategoriName: 'Makanan',
+                                kategoriJenis: 'pengeluaran'
+                            })
+                        }} style={{ flex: 1, height: 40, marginLeft: 20, marginRight: 5, borderRadius: 10, justifyContent: 'center', alignItems: 'center', backgroundColor: active === 'pengeluaran' ? '#ff4000' : '#e6e6e6' }}>
                         <Text style={{ fontSize: 18, color: active === 'pengeluaran' ? 'white' : 'black'}}>Pengeluaran</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity  disabled={active === 'pemasukan'} onPress={() =>setActive('pemasukan') } style={{ flex: 1, height: 40, marginRight: 20, marginLeft: 5, borderRadius: 10, justifyContent: 'center', alignItems: 'center', backgroundColor: active === 'pemasukan' ? '#0099ff' : '#e6e6e6' }}>
+                    <TouchableOpacity  disabled={active === 'pemasukan'} onPress={() => {
+                            setActive('pemasukan')
+                            setKategori({
+                                kategoriId: 4,
+                                kategoriName: 'Gaji',
+                                kategoriJenis: 'pemasukan'
+                            })
+                        }} style={{ flex: 1, height: 40, marginRight: 20, marginLeft: 5, borderRadius: 10, justifyContent: 'center', alignItems: 'center', backgroundColor: active === 'pemasukan' ? '#0099ff' : '#e6e6e6' }}>
                         <Text style={{ fontSize: 18,  color: active === 'pemasukan' ? 'white' : 'black' }}>Pemasukan</Text>
                     </TouchableOpacity>
                 </View>
@@ -55,8 +70,13 @@ const TambahFinanceScreen = ({ navigation }) => {
                     <View style={{ marginTop: 10, flexDirection: 'row', alignItems: 'center' }}>
                         <Text style={{ fontSize: 16, width: 120 }}>kategori</Text>
                         <TouchableWithoutFeedback onPress={() => navigation.navigate('Kategori')}>
-                            <View style={{ marginRight: 10, borderColor: '#b3b3b3', borderWidth: 1, borderRadius: 10, flex: 1, height: 40 }}>
-                                
+                            <View style={{ flexDirection: 'row', marginRight: 10, borderColor: '#b3b3b3', borderWidth: 1, borderRadius: 10, flex: 1, height: 40 }}>
+                                <View style={{ flex: 1, marginLeft: 10, justifyContent: 'center' }}>
+                                    <Text style={{ fontSize: 16 }}>{kategori.kategoriName}</Text>
+                                </View>
+                                <View style={{ justifyContent: 'center', alignItems: 'center', marginRight: 10 }}>
+                                    <Icon name="chevron-down" size={16} color={'black'}/>
+                                </View>
                             </View>
                         </TouchableWithoutFeedback>
                     </View>
