@@ -1,7 +1,9 @@
 import React from 'react'
 import { createStackNavigator } from '@react-navigation/stack';
+import { AddFinanceProvider } from '../provider/AddFinanceProvider';
 import HomeScreen from '../screen/beranda/HomeScreen';
-import TambahFinanceScreen from '../screen/beranda/TambahFinanceScreen'
+import TambahFinanceScreen from '../screen/beranda/navigasi/tambah/TambahFinanceScreen'
+import KategoriScreen from '../screen/beranda/navigasi/tambah/KategoriScreen';
 
 const Stack = createStackNavigator();
 
@@ -20,13 +22,19 @@ const optionsStyle = {
 
 const HomeStack = () => {
     return(
-        <Stack.Navigator>
-            <Stack.Screen name="Beranda" component={HomeScreen} options={{ headerShown: false }}/>
-            <Stack.Screen name="AddFinance" component={TambahFinanceScreen} options={{
-                 ...optionsStyle,
-                 title: 'Tambah Transaksi'
-            }}/>
-        </Stack.Navigator>
+        <AddFinanceProvider>
+            <Stack.Navigator>
+                <Stack.Screen name="Beranda" component={HomeScreen} options={{ headerShown: false }}/>
+                <Stack.Screen name="AddFinance" component={TambahFinanceScreen} options={{
+                    ...optionsStyle,
+                    title: 'Tambah Transaksi'
+                }}/>
+                <Stack.Screen name="Kategori" component={KategoriScreen} options={{
+                    ...optionsStyle,
+                    title: 'Kategori'
+                }}/>
+            </Stack.Navigator>
+        </AddFinanceProvider>
     )
 }
 
