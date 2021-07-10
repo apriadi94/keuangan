@@ -39,6 +39,18 @@ const KategoriScreen = ({ navigation }) => {
     }
 
     useEffect(() => {
+        navigation.setOptions({
+            headerRight: () => (
+                <View style={{ flexDirection: 'row' }}>
+                    <TouchableOpacity style={{ width: 40, alignItems: 'flex-end', justifyContent: 'center', height: 40, marginRight: 5 }}>
+                        <Icon name="search" color="white" size={18} style={{ marginRight: 10 }}/>
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={() => navigation.navigate('TambahKategori')} style={{ width: 40, alignItems: 'center', justifyContent: 'center', height: 40}}>
+                        <Icon name="plus" color="white" size={18}/>
+                    </TouchableOpacity>
+                </View>
+            )
+        })
         getData()
     }, [])
 
