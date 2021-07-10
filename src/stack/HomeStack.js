@@ -4,7 +4,6 @@ import { AddFinanceProvider } from '../provider/AddFinanceProvider';
 import HomeScreen from '../screen/beranda/HomeScreen';
 import TambahFinanceScreen from '../screen/beranda/navigasi/tambah/TambahFinanceScreen'
 import KategoriScreen from '../screen/beranda/navigasi/tambah/KategoriScreen';
-import TambahKategoriScreen from '../screen/beranda/navigasi/tambah/TambahKategoriScreen';
 
 const Stack = createStackNavigator();
 
@@ -33,10 +32,6 @@ const HomeStack = () => {
                 <Stack.Screen name="Kategori" component={KategoriScreen} options={{
                     ...optionsStyle,
                     title: 'Kategori'
-                }}/>
-                <Stack.Screen name="TambahKategori" component={TambahKategoriScreen} options={{
-                    ...optionsStyle,
-                    title: 'Tambah Kategori'
                 }}/>
             </Stack.Navigator>
         </AddFinanceProvider>

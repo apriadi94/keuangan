@@ -2,10 +2,13 @@ import React, { useState, useEffect, useContext } from 'react'
 import { View, Text, TouchableOpacity } from 'react-native'
 import { AddFinanceContext } from '../../../../provider/AddFinanceProvider'
 import Icon from 'react-native-vector-icons/FontAwesome';
+import TambahKategori from './TambahKategori';
 
 const KategoriScreen = ({ navigation }) => {
     const { setKategori, kategori, active } = useContext(AddFinanceContext)
     const [data, setData] = useState([])
+    const [modalTambahKategori, setModalTambahKategori] = useState(false)
+
     const kategoriList = [
         {
             kategoriId: 1,
@@ -45,7 +48,7 @@ const KategoriScreen = ({ navigation }) => {
                     <TouchableOpacity style={{ width: 40, alignItems: 'flex-end', justifyContent: 'center', height: 40, marginRight: 5 }}>
                         <Icon name="search" color="white" size={18} style={{ marginRight: 10 }}/>
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={() => navigation.navigate('TambahKategori')} style={{ width: 40, alignItems: 'center', justifyContent: 'center', height: 40}}>
+                    <TouchableOpacity onPress={() => setModalTambahKategori(true)} style={{ width: 40, alignItems: 'center', justifyContent: 'center', height: 40}}>
                         <Icon name="plus" color="white" size={18}/>
                     </TouchableOpacity>
                 </View>
@@ -76,6 +79,7 @@ const KategoriScreen = ({ navigation }) => {
                     </View>
                 )
             }
+            <TambahKategori modalTambahKategori={modalTambahKategori} setModalTambahKategori={setModalTambahKategori}/>
         </View>
     )
 }
