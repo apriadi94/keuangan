@@ -4,17 +4,17 @@ import { View, Text, TextInput } from 'react-native'
 import { AddFinanceContext } from '../../../../provider/AddFinanceProvider'
 import RadioButtonRN from 'radio-buttons-react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import { addKategori } from '../../../../database/allSchema'
 
 
 
 const TambahKategori = ({ modalTambahKategori, setModalTambahKategori }) => {
     const { active, setActive } = useContext(AddFinanceContext)
     const [formKategori, setFormKategori] = useState({
+        id : 1,
         kategoriName: '',
         kategoriJenis: active
     })
-
-   
 
     const data = [
         {
@@ -28,7 +28,11 @@ const TambahKategori = ({ modalTambahKategori, setModalTambahKategori }) => {
     ];
 
     const simpanKategori = () => {
-       alert('simpan')
+        addKategori(formKategori).then(() => {
+            alert('berhasil')
+        }).catch(e => {
+            console.log(e)
+        })
     }
 
     return(
