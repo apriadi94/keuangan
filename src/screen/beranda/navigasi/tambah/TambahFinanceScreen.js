@@ -2,8 +2,10 @@ import React, { useState, useContext } from 'react'
 import { View, Text, TouchableOpacity, TextInput, TouchableWithoutFeedback } from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome';
 import moment from 'moment'
+import convertRupiah from 'rupiah-format'
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { AddFinanceContext } from '../../../../provider/AddFinanceProvider'
+import CalculatorKomponent from './CalculatorKomponent'
 
 
 const TambahFinanceScreen = ({ navigation }) => {
@@ -11,6 +13,8 @@ const TambahFinanceScreen = ({ navigation }) => {
     const [date, setDate] = useState(new Date());
     const [mode, setMode] = useState('date');
     const [show, setShow] = useState(false);
+    const [jumlah, setJumlah] = useState(0)
+    const [modalCalculator, setModalCalculator] = useState(false)
 
     const onChangeDate = (event, selectedDate) => {
         const currentDate = selectedDate || date;
@@ -82,9 +86,16 @@ const TambahFinanceScreen = ({ navigation }) => {
                     </View>
                     <View style={{ marginTop: 10, flexDirection: 'row', alignItems: 'center' }}>
                         <Text style={{ fontSize: 16, width: 120 }}>Jumlah</Text>
-                        <View style={{ marginRight: 10, borderColor: '#b3b3b3', borderWidth: 1, borderRadius: 10, flex: 1, height: 40 }}>
-                            <TextInput style={{ fontSize: 16, marginLeft: 10 }}/>
-                        </View>
+                        <TouchableWithoutFeedback onPress={() => setModalCalculator(true)}>
+                            <View style={{ flexDirection: 'row', marginRight: 10, borderColor: '#b3b3b3', borderWidth: 1, borderRadius: 10, flex: 1, height: 40 }}>
+                                <View style={{ flex: 1, marginLeft: 10, justifyContent: 'center' }}>
+                                    <Text style={{ fontSize: 16 }}>{convertRupiah.convert(jumlah).replace(',00','')}</Text>
+                                </View>
+                                <View style={{ justifyContent: 'center', alignItems: 'center', marginRight: 10 }}>
+                                    <Icon name="calculator" size={16} color={'black'}/>
+                                </View>
+                            </View>
+                        </TouchableWithoutFeedback>
                     </View>
                     <View style={{ marginTop: 10, flexDirection: 'row', alignItems: 'center' }}>
                         <Text style={{ fontSize: 16, width: 120 }}>Keterangan</Text>
@@ -110,6 +121,8 @@ const TambahFinanceScreen = ({ navigation }) => {
                 onChange={onChangeDate}
                 />
             )}
+
+            <CalculatorKomponent jumlah={jumlah} setJumlah={setJumlah} modalCalculator={modalCalculator} setModalCalculator={setModalCalculator}/>
         </View>
     )
 }
