@@ -6,7 +6,6 @@ import { Calculator } from 'react-native-calculator'
 
 
 const CalculatorKomponent = ({ modalCalculator, setModalCalculator, jumlah, setJumlah }) => {
-    console.log(modalCalculator)
     const [textCalculator, setTextCalculator] = useState(0)
     return(
         <Modal
