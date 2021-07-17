@@ -2,19 +2,19 @@ import React, { useState, useContext } from 'react'
 import { Modal, ModalContent, SlideAnimation, ModalTitle, ModalFooter, ModalButton } from 'react-native-modals';
 import { View, Text, TextInput } from 'react-native'
 import { AddFinanceContext } from '../../../../provider/AddFinanceProvider'
+import { addKategori } from '../../../../database/kategori/kategoriService'
 import RadioButtonRN from 'radio-buttons-react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import { addKategori } from '../../../../database/allSchema'
 
 
+const TambahKategori = ({ getData, modalTambahKategori, toggleModal }) => {
 
-const TambahKategori = ({ modalTambahKategori, setModalTambahKategori }) => {
     const { active, setActive } = useContext(AddFinanceContext)
     const [formKategori, setFormKategori] = useState({
-        id : 1,
         kategoriName: '',
         kategoriJenis: active
     })
+    const [loadingTambah, setLoadingTambah] = useState(false)
 
     const data = [
         {
@@ -27,24 +27,24 @@ const TambahKategori = ({ modalTambahKategori, setModalTambahKategori }) => {
          }
     ];
 
-    const simpanKategori = () => {
-        addKategori(formKategori).then(() => {
-            alert('berhasil')
+    const simpanKategori = async () => {
+        setLoadingTambah(true)
+        await addKategori(formKategori).then(() => {
+            getData()
+            setFormKategori({...formKategori, kategoriName: ''})
+            toggleModal()
         }).catch(e => {
             console.log(e)
         })
+        setLoadingTambah(false)
     }
 
     return(
         <Modal
             modalTitle={<ModalTitle title="Tambah Kategori" />}
             visible={modalTambahKategori}
-            onTouchOutside={() => {
-                setModalTambahKategori(false);
-            }}
-            onHardwareBackPress={() => {
-                setModalTambahKategori(false);
-            }}
+            onTouchOutside={toggleModal}
+            onHardwareBackPress={toggleModal }
             modalAnimation={new SlideAnimation({
                 slideFrom: 'bottom',
             })}
@@ -52,10 +52,11 @@ const TambahKategori = ({ modalTambahKategori, setModalTambahKategori }) => {
                 <ModalFooter>
                   <ModalButton
                     text="CANCEL"
-                    onPress={() => setModalTambahKategori(false)}
+                    onPress={toggleModal}
                   />
                   <ModalButton
-                    text="OK"
+                    text={loadingTambah ? 'Loading...' : 'Tambahkan'}
+                    disabled={loadingTambah}
                     onPress={simpanKategori}
                   />
                 </ModalFooter>
