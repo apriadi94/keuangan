@@ -3,16 +3,33 @@ import { View, Text, TouchableOpacity } from 'react-native'
 import { AddFinanceContext } from '../../../../provider/AddFinanceProvider'
 import Icon from 'react-native-vector-icons/FontAwesome';
 import TambahKategori from './TambahKategori';
+import EditKategori from './EditKategori'
 import { getKategori } from '../../../../database/kategori/kategoriService'
 
 const KategoriScreen = ({ navigation }) => {
     const { setKategori, kategori, active } = useContext(AddFinanceContext)
     const [data, setData] = useState([])
     const [modalTambahKategori, setModalTambahKategori] = useState(false)
+    const [modalEditKategori, setModalEditKategori] = useState(false)
+    const [editForm, setEditForm] = useState({
+        id: '',
+        kategoriName : ''
+    })
+
 
     const toggleModal = useCallback(() => {
         setModalTambahKategori(!modalTambahKategori)
     }, [modalTambahKategori])
+
+    const toggleModalEdit = useCallback(() => {
+        if(!modalEditKategori === false){
+            setEditForm({
+                id: '',
+                kategoriName : ''
+            })
+        }
+        setModalEditKategori(!modalEditKategori)
+    }, [modalEditKategori])
 
     
     const getData = () => {
@@ -35,11 +52,15 @@ const KategoriScreen = ({ navigation }) => {
             )
         })
         getData()
-    }, [toggleModal])
+    }, [toggleModal, toggleModalEdit, editForm])
 
     return(
         <View style={{ flex: 1, backgroundColor: 'white' }}>
             <TambahKategori getData={getData} modalTambahKategori={modalTambahKategori} toggleModal={toggleModal}/>
+            {
+                editForm.kategoriName !== '' ? <EditKategori setEditForm={setEditForm} dataForm={editForm} getData={getData} modalEditKategori={modalEditKategori} toggleModal={toggleModalEdit}/> : null
+            }
+            
             {
                 data.map((list, index) =>
                     <View key={index}>
@@ -52,9 +73,15 @@ const KategoriScreen = ({ navigation }) => {
                                     <Text style={{ fontSize: 20, color: kategori.id === list.id ? 'green': 'black' }}>{list.kategoriName}</Text>
                                 </View>
                             </TouchableOpacity>
-                            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'flex-end' }}>
+                            <TouchableOpacity onPress={() => {
+                                    setEditForm({
+                                        id: list.id,
+                                        kategoriName: list.kategoriName
+                                    })
+                                    toggleModalEdit()
+                            }} style={{ flex: 1, justifyContent: 'center', alignItems: 'flex-end' }}>
                                 <Icon name="edit" size={20} color={'black'}/>
-                            </View>
+                            </TouchableOpacity>
                         </View>
                         <View style={{ height: 1, backgroundColor: '#ccc', marginHorizontal: 20, marginBottom: 10, marginTop: 10}}></View>
                     </View>

@@ -31,4 +31,18 @@ export const addKategori = newKategori => {
     })
 }
 
+export const updateKategori = (form) => {
+    return new Promise((resolve, reject) => {
+        Realm.open(databaseOptions).then(realm =>{
+            realm.write(async() => {
+                let kategori = realm.objectForPrimaryKey(KATEGORI_SCHEMA, form.id)
+                kategori.kategoriName = form.kategoriName
+                resolve('')
+            })
+        }).catch(err => {
+            reject(err)
+        })
+    })
+}
+
 export { KATEGORI_SCHEMA, KategoriSchema }
