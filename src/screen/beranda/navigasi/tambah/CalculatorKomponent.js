@@ -1,9 +1,7 @@
 import React, { useState } from 'react'
 import { View, Text } from 'react-native'
-import { Modal, ModalContent, SlideAnimation, ModalTitle, ModalFooter, ModalButton } from 'react-native-modals';
+import { Modal, ModalContent, SlideAnimation, ModalTitle } from 'react-native-modals';
 import { Calculator } from 'react-native-calculator'
-
-
 
 const CalculatorKomponent = ({ modalCalculator, setModalCalculator, jumlah, setJumlah }) => {
     const [textCalculator, setTextCalculator] = useState(0)
