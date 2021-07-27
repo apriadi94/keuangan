@@ -5,10 +5,13 @@ import moment from 'moment'
 import convertRupiah from 'rupiah-format'
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { AddFinanceContext } from '../../../../provider/AddFinanceProvider'
+import { AppContext } from '../../../../provider/AppProvider';
+import { addTransaction } from '../../../../database/finance/financeService'
 import CalculatorKomponent from './CalculatorKomponent'
 
 
 const TambahFinanceScreen = ({ navigation }) => {
+    const { getDataFinanceFromProvider } = useContext(AppContext)
     const { kategori, setKategori, active, setActive } = useContext(AddFinanceContext)
     const [date, setDate] = useState(new Date());
     const [mode, setMode] = useState('date');
@@ -16,6 +19,8 @@ const TambahFinanceScreen = ({ navigation }) => {
     const [jumlah, setJumlah] = useState(0)
     const [keterangan, setKeterangan] = useState('')
     const [modalCalculator, setModalCalculator] = useState(false)
+
+
 
     const onChangeDate = (event, selectedDate) => {
         const currentDate = selectedDate || date;
@@ -32,6 +37,21 @@ const TambahFinanceScreen = ({ navigation }) => {
         showMode('date');
       };
 
+      const addFinance = async () => {
+        const newTransaction = {
+            tanggal: date,
+            kategoriName: kategori.kategoriName,
+            kategoriId: kategori.id,
+            jumlah: jumlah,
+            jenis: active,
+            keterangan: keterangan
+        }
+        await addTransaction(newTransaction).then(async () => {
+            await getDataFinanceFromProvider()
+            navigation.goBack()
+        })
+      }
+
     return(
         <View>
             <View style={{ backgroundColor: '#fff' }}>
@@ -39,7 +59,7 @@ const TambahFinanceScreen = ({ navigation }) => {
                     <TouchableOpacity disabled={active === 'pengeluaran'} onPress={() => {
                             setActive('pengeluaran')
                             setKategori({
-                                kategoriId: 1,
+                                id: 1,
                                 kategoriName: 'Belanja',
                                 kategoriJenis: 'pengeluaran'
                             })
@@ -49,7 +69,7 @@ const TambahFinanceScreen = ({ navigation }) => {
                     <TouchableOpacity  disabled={active === 'pemasukan'} onPress={() => {
                             setActive('pemasukan')
                             setKategori({
-                                kategoriId: 5,
+                                id: 5,
                                 kategoriName: 'Gaji',
                                 kategoriJenis: 'pemasukan'
                             })
@@ -108,9 +128,9 @@ const TambahFinanceScreen = ({ navigation }) => {
             </View>
             <View style={{ height: 1, backgroundColor: '#cccccc' }}></View>
             <View style={{ marginTop: 20, justifyContent: 'center', alignItems: 'center' }}>
-                <View style={{ height: 50, borderRadius:10, justifyContent: 'center', alignItems: 'center', width: 200, backgroundColor: active === 'pemasukan' ?  '#0099ff' : '#ff4000'}}>
+                <TouchableOpacity onPress={addFinance} style={{ height: 50, borderRadius:10, justifyContent: 'center', alignItems: 'center', width: 200, backgroundColor: active === 'pemasukan' ?  '#0099ff' : '#ff4000'}}>
                     <Text style={{ color: 'white', fontSize: 20 }}>Simpan</Text>
-                </View>
+                </TouchableOpacity>
             </View>
             {show && (
                 <DateTimePicker

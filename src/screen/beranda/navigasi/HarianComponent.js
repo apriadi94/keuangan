@@ -1,53 +1,22 @@
-import React, { useState, useEffect } from 'react'
-import { View, Text, ScrollView } from 'react-native'
+import React, { useState, useEffect, useContext } from 'react'
+import { View, Text, ScrollView, TouchableOpacity } from 'react-native'
 import moment from 'moment'
+import { AppContext } from '../../../provider/AppProvider'
 import convertRupiah from 'rupiah-format'
+import { deleteFinance } from '../../../database/finance/financeService' 
 
 const HarianComponent = ({ navigation }) => {
+    const { dataFinance } = useContext(AppContext)
     const [data, setData] = useState([])
-    const fetchData = [
-        {
-            tanggal: "2021-07-02",
-            kategoriName: "Makanan",
-            kategoriId: 1,
-            jumlah: 150000,
-            jenis: 'pengeluaran',
-            keterangan: 'Mie Indomie 3, Mie Sedap 5, Mie Sarimi 7'
-        },
-        {
-            tanggal: "2021-07-02",
-            kategoriName: "Pakaian",
-            kategoriId: 2,
-            jumlah: 375000,
-            jenis: 'pengeluaran',
-            keterangan: 'Sepatu dan Dasi'
-        },
-
-        {
-            tanggal: "2021-07-04",
-            kategoriName: "Proyek",
-            kategoriId: 10,
-            jumlah: 2000000,
-            jenis: 'pemasukan',
-            keterangan: 'Proyek PTA'
-        },
-
-    ]
-
-    const getData = async() => {
-        const newData = await changeData(fetchData)
-        setData(newData)
-    }
 
     const changeData = (arrayData) => {
-        return new Promise(resolve => {
             const arrData = []
             let newData = {}
             let jumlah = {}
 
             arrayData.forEach(item => {
-                jumlah[item.tanggal] ? jumlah[item.tanggal]++ : jumlah[item.tanggal] = 1
-                newData[item.tanggal] = arrayData.filter(itemFilter => itemFilter.tanggal === item.tanggal)
+                jumlah[moment(item.tanggal).format('YYYY-MM-DD')] ? jumlah[moment(item.tanggal).format('YYYY-MM-DD')]++ : jumlah[moment(item.tanggal).format('YYYY-MM-DD')] = 1
+                newData[moment(item.tanggal).format('YYYY-MM-DD')] = arrayData.filter(itemFilter => moment(itemFilter.tanggal).format('YYYY-MM-DD') === moment(item.tanggal).format('YYYY-MM-DD'))
             })
 
             const objectArray = Object.entries(newData);
@@ -71,14 +40,18 @@ const HarianComponent = ({ navigation }) => {
                     pengeluaran
                 })
             });
+            setData(arrData)
+    }
 
-            resolve(arrData)
-        })
+    const deleteTransaction = async (id) => {
+        await deleteFinance(id)
+        const newData =  dataFinance.filter(item => item.id !== id)
+        changeData(newData)
     }
 
     useEffect(() => {
-        getData()
-    }, [])
+        changeData(dataFinance)
+    }, [dataFinance])
     
 
 
@@ -115,9 +88,9 @@ const HarianComponent = ({ navigation }) => {
                             <View style={{ height: 1, marginHorizontal: 5, backgroundColor: '#f2f2f2' }}></View>
                             {
                                 item.data.map((value, indexValue) =>
-                                    <View key={indexValue} style={{flexDirection: 'row', marginVertical: 10}}>
+                                    <TouchableOpacity onPress={() => deleteTransaction(value.id)} key={indexValue} style={{flexDirection: 'row', marginVertical: 10}}>
                                         <View style={{ flex: 1, marginLeft: 10}}>
-                                            <Text>{value.kategori}</Text>
+                                            <Text>{value.kategoriName}</Text>
                                         </View>
                                         <View style={{flex : 1.5, marginRight: 10}}>
                                             <Text style={{ marginRight: 10 }}>
@@ -129,7 +102,7 @@ const HarianComponent = ({ navigation }) => {
                                                 {convertRupiah.convert(value.jumlah).replace(',00','')}
                                             </Text>
                                         </View>
-                                    </View>
+                                    </TouchableOpacity>
                                 )
                             }
                         </View>
