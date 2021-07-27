@@ -14,6 +14,7 @@ const TambahFinanceScreen = ({ navigation }) => {
     const [mode, setMode] = useState('date');
     const [show, setShow] = useState(false);
     const [jumlah, setJumlah] = useState(0)
+    const [keterangan, setKeterangan] = useState('')
     const [modalCalculator, setModalCalculator] = useState(false)
 
     const onChangeDate = (event, selectedDate) => {
@@ -39,7 +40,7 @@ const TambahFinanceScreen = ({ navigation }) => {
                             setActive('pengeluaran')
                             setKategori({
                                 kategoriId: 1,
-                                kategoriName: 'Makanan',
+                                kategoriName: 'Belanja',
                                 kategoriJenis: 'pengeluaran'
                             })
                         }} style={{ flex: 1, height: 40, marginLeft: 20, marginRight: 5, borderRadius: 10, justifyContent: 'center', alignItems: 'center', backgroundColor: active === 'pengeluaran' ? '#ff4000' : '#e6e6e6' }}>
@@ -48,7 +49,7 @@ const TambahFinanceScreen = ({ navigation }) => {
                     <TouchableOpacity  disabled={active === 'pemasukan'} onPress={() => {
                             setActive('pemasukan')
                             setKategori({
-                                kategoriId: 4,
+                                kategoriId: 5,
                                 kategoriName: 'Gaji',
                                 kategoriJenis: 'pemasukan'
                             })
@@ -98,9 +99,9 @@ const TambahFinanceScreen = ({ navigation }) => {
                         </TouchableWithoutFeedback>
                     </View>
                     <View style={{ marginTop: 10, flexDirection: 'row', alignItems: 'center' }}>
-                        <Text style={{ fontSize: 16, width: 120 }}>Keterangan</Text>
-                        <View style={{ marginRight: 10, borderColor: '#b3b3b3', borderWidth: 1, borderRadius: 10, flex: 1, height: 40 }}>
-                            <TextInput style={{ fontSize: 16, marginLeft: 10 }}/>
+                        <Text style={{ fontSize: 16, width: 120, textAlignVertical: 'top' }}>Keterangan</Text>
+                        <View style={{ marginRight: 10, borderColor: '#b3b3b3', borderWidth: 1, borderRadius: 10, flex: 1, minHeight: 40 }}>
+                            <TextInput multiline={true} value={keterangan} onChangeText={(text) => setKeterangan(text)} style={{ fontSize: 16, marginLeft: 10, paddingTop: 0, paddingBottom: 0, marginTop: 5 }}/>
                         </View>
                     </View>
                 </View>

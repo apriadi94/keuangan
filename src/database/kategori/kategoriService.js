@@ -1,6 +1,7 @@
 import Realm from 'realm'
 import { databaseOptions } from '../allSchema'
 import { KATEGORI_SCHEMA, KategoriSchema } from './kategoriSchema'
+import { kategoriJson } from './firstValue'
 
 export const getKategori = (kategoriJenis) => {
     return new Promise((resolve, reject) => {
@@ -8,6 +9,24 @@ export const getKategori = (kategoriJenis) => {
             const data = realm.objects(KATEGORI_SCHEMA)
             const filterData = data.filtered(`kategoriJenis == "${kategoriJenis}"`)
             resolve(filterData)
+        }).catch(err => {
+            reject(err)
+        })
+    })
+}
+
+export const defaultKategori = () => {
+    return new Promise((resolve, reject) => {
+        Realm.open(databaseOptions).then(realm =>{
+            realm.write(async() => {
+                const lastKategori = realm.objects(KATEGORI_SCHEMA).sorted('id', true)[0];
+                if(!lastKategori){
+                    kategoriJson.forEach(value => {
+                        realm.create(KATEGORI_SCHEMA, value)
+                    })
+                    resolve('sukses')
+                }
+            })
         }).catch(err => {
             reject(err)
         })

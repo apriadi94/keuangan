@@ -1,10 +1,14 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { View, TouchableOpacity } from 'react-native'
 import HeaderComponent from './component/HeaderComponent'
 import TopNavigasi from './navigasi/TopNavigasi'
 import Icon from 'react-native-vector-icons/FontAwesome';
+import { defaultKategori } from '../../database/kategori/kategoriService'
 
 const HomeScreen = ({navigation}) => {
+    useEffect(() => {
+        defaultKategori()
+    }, [])
     return(
         <View style={{ flex: 1, backgroundColor: '#ccc' }}>
             <HeaderComponent/>
